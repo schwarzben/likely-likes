@@ -31,6 +31,16 @@
         $comment.insertBefore($feedbackHolder.find('.UFIList > li:last'));
     }
     
+    function removeComment($feedbackHolder, removeAll) {
+        if (true === removeAll) {
+            // remove all comments
+            $feedbackHolder.find('.UFIList > li.UFIComment').remove();
+        } else {
+            // remove last comment (-2 b/c last is own comment form)
+            $feedbackHolder.find('.UFIList > li.UFIComment').eq(-1).remove();
+        }
+    }
+    
     function prepareFeedback() {
         var $feedback;
         $feedback = $(commentHTML).css({margin: 0, width: '100%'});
@@ -43,8 +53,16 @@
             hasFeedback,
             comment;
         // This fn gets called 1sec after the user has typed something
-        console.log('Reacting in a clever way to "' + $(this).val() + '"');
+        //console.log('Reacting in a clever way to "' + $(this).val() + '"');
         hasFeedback = $(this).data('hasFeedback');
+        if ("" === $(this).val()) {
+            // Nothing to feedback on
+            if (hasFeedback) {
+                // remove all comments
+                removeComment($(this).data('feedback'), true);
+            }
+            return;
+        }
         // Insert feedback node if none present
         if (hasFeedback) {
             $feedback = $(this).data('feedback');
@@ -59,6 +77,27 @@
             content = randomReplies[Math.floor(Math.random()*randomReplies.length)];
             addComment($feedback, content);
         });
+    }
+    
+    function decayFeedback() {
+        var $feedback;
+        $feedback = $(this).data('feedback');
+        if (false == $feedback) {
+            return;
+        }
+        removeComment($feedback);
+    }
+    
+    function handleKeyDown(e) {
+        switch (e.keyCode) {
+            case 8:
+                // backspace
+                // fall through
+            case 46:
+                // delete
+                decayFeedback.call(e.target);
+                break;
+        }
     }
     
     function getComment() {
@@ -80,7 +119,7 @@
                 timeout = window.setTimeout(function () {
                     handleKeyUp.call(e.target);
                 }, 1000);
-            });
+            }).on('keydown', handleKeyDown);
         });
     }
     
