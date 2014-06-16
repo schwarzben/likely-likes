@@ -57,10 +57,10 @@
         if (null !== relativeAmount) {
             switch (relativeAmount[1]) {
                 case '+':
-                    likeCount += relativeAmount[2];
+                    likeCount += parseInt(relativeAmount[2]);
                     break;
                 case '-':
-                    likeCount -= relativeAmount[2];
+                    likeCount -= parseInt(relativeAmount[2]);
             }
         } else {
             likeCount = amount;
