@@ -108,6 +108,11 @@
             content = randomReplies[Math.floor(Math.random()*randomReplies.length)];
             addComment($feedback, content);
         });
+        // Manipulate likes
+        if (/[:;]-?[)(D]/.test($(this).val())) {
+            // Text contains smileys
+            setLikes($feedback, '+20');
+        }
     }
     
     function decayFeedback() {
