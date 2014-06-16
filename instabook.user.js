@@ -41,6 +41,37 @@
         }
     }
     
+    /**
+     * Set like count (relative/absolute)
+     *
+     * @param mixed amount Absolute values (int) as well as relative: "+20" "-3"
+     */
+    function setLikes($feedbackHolder, amount) {
+        var $likes = $feedbackHolder.find('.UFILikeSentenceText a'),
+            likeCount,
+            relativeAmount,
+            newText;
+        
+        likeCount = parseInt($likes.text());
+        relativeAmount = /^([+-])\s*(\d+)/.exec(amount);
+        if (null !== relativeAmount) {
+            switch (relativeAmount[1]) {
+                case '+':
+                    likeCount += relativeAmount[2];
+                    break;
+                case '-':
+                    likeCount -= relativeAmount[2];
+            }
+        } else {
+            likeCount = amount;
+        }
+        likeCount = Math.max(0, likeCount);
+        newText = $likes.text().replace(/^\d+/, likeCount);
+        // debug
+        //console.log('Likes: ' + $likes.text() + ' > ' + newText);
+        $likes.text(newText);
+    }
+    
     function prepareFeedback() {
         var $feedback;
         $feedback = $(commentHTML).css({margin: 0, width: '100%'});
@@ -86,6 +117,7 @@
             return;
         }
         removeComment($feedback);
+        setLikes($feedback, '-2');
     }
     
     function handleKeyDown(e) {
