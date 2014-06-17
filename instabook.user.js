@@ -70,6 +70,11 @@
         // debug
         //console.log('Likes: ' + $likes.text() + ' > ' + newText);
         $likes.text(newText);
+        if (likeCount === 0) {
+            $feedbackHolder.find('.UFILikeSentence').hide();
+        } else {
+            $feedbackHolder.find('.UFILikeSentence').show();
+        }
     }
     
     function prepareFeedback() {
@@ -91,6 +96,8 @@
             if (hasFeedback) {
                 // remove all comments
                 removeComment($(this).data('feedback'), true);
+                // and likes
+                setLikes($(this).data('feedback'), 0);
             }
             return;
         }
