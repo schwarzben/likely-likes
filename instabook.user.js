@@ -156,6 +156,7 @@
             var timeout;
             console.log('found fbTimelineComposerUnit:');
             console.log(jNode);
+            // React to input (with timeout)
             jNode.eq(0).on('keyup', function (e) {
                 if (timeout !== undefined) {
                     window.clearTimeout(timeout);
@@ -164,6 +165,16 @@
                     handleKeyUp.call(e.target);
                 }, 1000);
             }).on('keydown', handleKeyDown);
+            // Prevent users from posting fo' real
+            jNode.parents('form')
+                // Remove other event handlers
+                .unbind('submit').off('submit').removeAttr('onsubmit')
+                .attr('action', '//x')
+                // Replace with own (showstopper)
+                .on('submit', function (e) {
+                    e.stopImmediatePropagation();
+                    return false;
+                });
         });
     }
     
