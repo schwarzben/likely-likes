@@ -23,7 +23,7 @@
         $comment.find('.UFICommentBody > span').html(content);
         // Make someone else say this
         // Friend list: https://www.facebook.com/browse/?type=page_fans&page_id=
-        randomFriend = friends[Math.floor(Math.random()*friends.length)];
+        randomFriend = friends[Math.floor(Math.random() * friends.length)];
         $comment.find('img').attr('src', randomFriend.img);
         $comment.find('.UFICommentActorName').text(randomFriend.alt);
         // Append to comment listing
@@ -51,15 +51,16 @@
             relativeAmount,
             newText;
         
-        likeCount = parseInt($likes.text());
-        relativeAmount = /^([+-])\s*(\d+)/.exec(amount);
+        likeCount = parseInt($likes.text(), 10);
+        relativeAmount = /^([+\-])\s*(\d+)/.exec(amount);
         if (null !== relativeAmount) {
             switch (relativeAmount[1]) {
                 case '+':
-                    likeCount += parseInt(relativeAmount[2]);
+                    likeCount += parseInt(relativeAmount[2], 10);
                     break;
                 case '-':
-                    likeCount -= parseInt(relativeAmount[2]);
+                    likeCount -= parseInt(relativeAmount[2], 10);
+                    break;
             }
         } else {
             likeCount = amount;
@@ -125,6 +126,7 @@
         var $feedback;
         $feedback = $(this).data('feedback');
         if (false == $feedback) {
+            // falsy intented
             return;
         }
         removeComment($feedback);
@@ -188,13 +190,13 @@
         var promise;
         promise = $.get('https://www.facebook.com/plugins/likebox.php?href=https%3A%2F%2Fwww.facebook.com%2FMuthesiusKunsthochschule&width&height=1000&colorscheme=light&show_faces=true&header=true&stream=false&show_border=true');
         promise.done(function (data) {
-          friends = [];
-          $("<div>").html(data).find(".pluginFacepile img").each(function () {
-            friends.push({img: this.src, alt: this.alt});
-          });
-          // debug
-          //console.log('Found friends:');
-          //console.log(friends);
+            friends = [];
+            $("<div>").html(data).find(".pluginFacepile img").each(function () {
+                friends.push({img: this.src, alt: this.alt});
+            });
+            // debug
+            //console.log('Found friends:');
+            //console.log(friends);
         });
     }
     
