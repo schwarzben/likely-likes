@@ -102,7 +102,10 @@
     function handleKeyUp() {
         var $feedback,
             hasFeedback,
-            comment;
+            comment,
+            $container,
+            p;
+
         // This fn gets called 1sec after the user has typed something
         //console.log('Reacting in a clever way to "' + $(this).val() + '"');
         hasFeedback = $(this).data('hasFeedback');
@@ -121,8 +124,17 @@
             $feedback = $(this).data('feedback');
         } else {
             $feedback = prepareFeedback();
-            $feedback.appendTo($(this).closest('.child_is_active').parent());
+            $container = $(this).closest('.child_is_active').parent();
+            $feedback.appendTo($container).hide();
             $(this).data({hasFeedback: true, feedback: $feedback});
+            // Scroll to make feedback visible
+            p = $('html, body').animate({
+                    scrollTop: $container.offset().top - 100}) // built-in compensation for fixed elements (e.g. smurf bar)
+               .promise();
+            // Also subtly animate feedback to direct attention
+            p.always(function () {
+                $feedback.fadeIn("slow");
+            });
         }
         // TODO Fill feedback more than once/react to others' comments
         getComment($(this).val()).done(function (filteredReplies) {
