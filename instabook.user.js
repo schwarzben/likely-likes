@@ -48,7 +48,7 @@
             // remove all comments
             $feedbackHolder.find('.UFIList > li.UFIComment').remove();
         } else {
-            // remove last comment (-2 b/c last is own comment form)
+            // remove last comment
             $feedbackHolder.find('.UFIList > li.UFIComment').eq(-1).remove();
         }
     }
