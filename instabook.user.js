@@ -71,7 +71,7 @@
             newText;
         
         likeCount = parseInt($likes.text(), 10);
-        relativeAmount = /^([+\-])\s*(\d+)/.exec(amount);
+        relativeAmount = /^([+\-*])\s*([\d.]+)/.exec(amount);
         if (null !== relativeAmount) {
             switch (relativeAmount[1]) {
                 case '+':
@@ -80,6 +80,8 @@
                 case '-':
                     likeCount -= parseInt(relativeAmount[2], 10);
                     break;
+                case '*':
+                    likeCount = Math.floor(likeCount * parseFloat(relativeAmount[2]));
             }
         } else {
             likeCount = amount;
