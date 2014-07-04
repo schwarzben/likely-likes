@@ -90,10 +90,16 @@
         if (null !== relativeAmount) {
             switch (relativeAmount[1]) {
                 case '+':
-                    likeCount += parseInt(relativeAmount[2], 10);
+                    likeCount += Math.floor(
+                        parseInt(relativeAmount[2], 10)
+                        * (Math.random() * (1.2 - 0.9) + 0.9)
+                        + 1);
                     break;
                 case '-':
-                    likeCount -= parseInt(relativeAmount[2], 10);
+                    likeCount -= Math.floor(
+                        parseInt(relativeAmount[2], 10)
+                        * (Math.random() * (1.2 - 0.9) + 0.9)
+                        + 1);
                     break;
                 case '*':
                     likeCount = Math.floor(likeCount * parseFloat(relativeAmount[2]));
