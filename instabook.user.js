@@ -224,7 +224,8 @@
                     replies[triggers[
                         i][1][
                         Math.floor(Math.random() * triggers[i][1].length)]],
-                    triggers[i][2]]);
+                    // But leave likes neutral, just to be sure
+                    '*1']);
             }
             dfd.resolve(content);
         }(trigger));
