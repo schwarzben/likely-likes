@@ -59,7 +59,9 @@
         // Friend list: https://www.facebook.com/browse/?type=page_fans&page_id=
         randomFriend = friends[Math.floor(Math.random() * friends.length)];
         $comment.find('img').attr('src', randomFriend.img);
-        $comment.find('.UFICommentActorName').text(randomFriend.alt);
+        $comment.find('.UFICommentActorName')
+            .text(randomFriend.alt)
+            .attr('href', randomFriend.href);
         // Set comment date/time
         // this is our reference:
         // <abbr title="Friday, 13 June 2014 at 15:05" class="livetimestamp">13 June at 15:05</abbr>
@@ -277,8 +279,9 @@
         promise = $.get('https://www.facebook.com/plugins/likebox.php?href=https%3A%2F%2Fwww.facebook.com%2FMuthesiusKunsthochschule&width&height=1000&colorscheme=light&show_faces=true&header=true&stream=false&show_border=true');
         promise.done(function (data) {
             friends = [];
-            $("<div>").html(data).find(".pluginFacepile img").each(function () {
-                friends.push({img: this.src, alt: this.alt});
+            $("<div>").html(data).find(".pluginFacepile a").each(function () {
+                friends.push({
+                    img: this.firstChild.src, alt: this.title, href: this.href});
             });
             // debug
             //console.log('Found friends:');
