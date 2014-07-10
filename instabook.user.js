@@ -51,7 +51,8 @@
     
     function addComment($feedbackHolder, content) {
         var $comment = $(commentRowHTML),
-            randomFriend;
+            randomFriend,
+            date;
         // Insert contents
         $comment.find('.UFICommentBody > span').html(content);
         // Make someone else say this
@@ -59,6 +60,17 @@
         randomFriend = friends[Math.floor(Math.random() * friends.length)];
         $comment.find('img').attr('src', randomFriend.img);
         $comment.find('.UFICommentActorName').text(randomFriend.alt);
+        // Set comment date/time
+        // this is our reference:
+        // <abbr title="Friday, 13 June 2014 at 15:05" class="livetimestamp">13 June at 15:05</abbr>
+        date = new Date();
+        $comment.find('.livetimestamp')
+            .text(date.toLocaleString('en-US', {
+                day: 'numeric', month: 'long', hour: 'numeric',
+                minute: 'numeric', hour12: false}))
+            .attr('title', date.toLocaleString('en-US', {
+                weekday: 'long', day: 'numeric', month: 'long', year: 'numeric',
+                hour: 'numeric', minute: 'numeric', hour12: false}));
         // Append to comment listing
         $comment.insertAfter($feedbackHolder.find('.UFIList > li:last'));
     }
