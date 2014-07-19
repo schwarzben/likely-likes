@@ -2,10 +2,15 @@
 // @name        Likely Likes
 // @namespace   bsfb
 // @include     https://www.facebook.com/MuthesiusKunsthochschule
-// @require  http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js
+// @require  http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js
 // @require  https://gist.github.com/raw/2625891/waitForKeyElements.js
+// @require  https://raw.githubusercontent.com/nyroDev/nyroModal/master/js/jquery.nyroModal.js
+// @require  https://raw.githubusercontent.com/nyroDev/nyroModal/master/js/jquery.nyroModal.filters.link.js
+// @require  https://raw.githubusercontent.com/nyroDev/nyroModal/master/js/jquery.nyroModal.filters.dom.js
+// @resource nyroCSS https://raw.githubusercontent.com/nyroDev/nyroModal/master/styles/nyroModal.css
 // @version     1
 // @grant    GM_addStyle
+// @grant    GM_getResourceText
 // ==/UserScript==
 
 (function () {
@@ -48,6 +53,11 @@
         friends,
         likeTarget,
         maxComments = 7,
+        modalContent = '<h1>So wird das nichts!</h1>'
+            + '<p>Der Post ist nicht so formuliert, dass eine ausreichend hohe Zahl an Likes erzielt werden würde.</p>'
+            + '<p>Die Seite wird nun neu geladen, um Anderen eine Chance zu geben, es besser zu machen.</p>',
+        modalCSS = '.ll-modal-cont{width:380px;height:280px;padding:10px;font-size:1.3333em}'
+            + '.ll-modal-cont h1{color:#3b5998;font-size:1.5em}',
         commentHTML = '<div style="margin: 0px; width: 100%; border-top: 1px solid rgb(211, 214, 219); background-color: rgb(237, 239, 244); padding-top: 3px; padding-bottom: 3px;" class="fbTimelineUFI uiCommentContainer"><form id="u_ps_0_0_8" action="/ajax/ufi/modify.php" method="post" class="commentable_item autoexpand_mode" rel="async"><input type="hidden" value="€,´,€,´,水,Д,Є" name="charset_test"><input type="hidden" autocomplete="off" value="AQEaSOiSqJ3B" name="fb_dtsg"><input type="hidden" value="{&quot;actor&quot;:&quot;259752652346&quot;,&quot;target_fbid&quot;:&quot;10152431036507347&quot;,&quot;target_profile_id&quot;:&quot;259752652346&quot;,&quot;type_id&quot;:&quot;22&quot;,&quot;assoc_obj_id&quot;:&quot;&quot;,&quot;source_app_id&quot;:&quot;0&quot;,&quot;extra_story_params&quot;:[],&quot;content_timestamp&quot;:&quot;1402918124&quot;,&quot;check_hash&quot;:&quot;AQBBBQ3-9U2ik3nO&quot;,&quot;source&quot;:&quot;13&quot;}" name="feedback_params" autocomplete="off"><input type="hidden" value="1" name="data_only_response" autocomplete="off"><input type="hidden" value="1" name="timeline_ufi" autocomplete="off"><input type="hidden" value="AQDmNkbc0CT4Q1XiEn_YK0R42jhTXNDml_TtReiPw-YvZmbdyubXmn3uwPAKZplRFdGbVVPJm_x1w5JOlQa3xsbS-xW9QtJZ8_mcNAHNQSOWWjLq9Uor4K1bXr9iPmqqdIILWNLcnILaj_Q-UxxuWDNY8iYjaOum0atJtWHD3LIMuuRMR1-Ncx2qxUdZKQkjlbuo_OAWqraGpjUZaBaKMR7AvwlS-IRuRuNbY3O0-rYWq8neRlxT8sPBk1bpZn4Lge2VKJ_MKGeNpRG9njvhTqLSYJa6MsiFpcdbb2pn6EGoc3gqWRu7A7lp6o766buJbnGOJMAPxvzf6IbuxZBNwvIFs7FcZeuNC1Dr-UWGNh2rCJE-v2jJgfpkZKgNnTpfwt_1NEWX9xvXJ2pfwWxB_p9BShuOfYYCd5EQMIs48PrM6Q" name="timeline_log_data"><div><div id="u_ps_0_0_a" class="uiUfi UFIContainer"><ul class="UFIList"><li class="UFIRow UFILikeSentence UFIFirstComponent" style="display: list-item;"><div class="clearfix"><div class="_ohe lfloat"><a aria-label="Like this" role="button" title="Like this" tabindex="-1" href="#" class="img _8o _8r UFIImageBlockImage UFILikeThumb"><i class="UFILikeIcon"></i></a></div><div class=""><div class="UFIImageBlockContent _42ef _8u"><div class="UFILikeSentenceText"><span><a class="profileLink" href="">20 Personen</a><span> würde das gefallen.</span></span></div></div></div></div></li></ul></div></div></form></div>',
         commentRowHTML = '<li class="UFIRow UFIFirstComment UFIFirstCommentComponent UFIComment display UFIComponent"><div class="clearfix"><div class="_ohe lfloat"><a aria-hidden="true" tabindex="-1" href="https://www.facebook.com/Franzi.Kruse89?fref=ufi" class="img _8o _8s UFIImageBlockImage"><img alt="" class="img UFIActorImage _54ru" src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xaf1/t1.0-1/p32x32/399984_528734033812449_1451271635_n.jpg"></a></div><div class=""><div class="clearfix UFIImageBlockContent _42ef"><div class="_ohf rfloat"><button tabindex="-1" title="Remove" class="_42ft _5upp _50zy _50-0 _50z- UFICommentCloseButtonFake" value="1" type="submit"><span>Remove</span></button></div><div class=""><div class="UFICommentContentBlock"><div class="UFICommentContent"><span><a href="https://www.facebook.com/Franzi.Kruse89?fref=ufi" dir="ltr" class="UFICommentActorName">Franzi Kruse</a></span><span> </span><span><span class="UFICommentBody"><span>Student*nnenwohnheim, ernsthaft? Lasst doch bitte die deutsche Sprache zufrieden, sie hat euch nichts getan.</span></span></span><span></span></div><div class="fsm fwn fcg UFICommentActions"><span><a href="/MuthesiusKunsthochschule/posts/10152423470497347?comment_id=10152423729657347&amp;offset=0&amp;total_comments=2" class="uiLinkSubtle"><abbr title="Friday, 13 June 2014 at 15:05" class="livetimestamp">13 June at 15:05</abbr></a></span></div></div></div></div></div></li>';
     
@@ -298,6 +308,11 @@
                 // Replace with own (showstopper)
                 .on('submit', function (e) {
                     e.stopImmediatePropagation();
+                    $.nmManual('#ll-modal', {
+                        callbacks: {
+                            'afterClose': function (nmObj) {
+                                unsafeWindow.location.reload();
+                            }}});
                     return false;
                 });
         });
@@ -319,7 +334,17 @@
         });
     }
     
+    function prepareModal() {
+        var nyroCSS = GM_getResourceText('nyroCSS');
+        GM_addStyle(nyroCSS);
+        GM_addStyle('.nyroModalBg{z-index:997}.nyroModalCont{z-index:998}.nyroModalClose{z-index:999}');
+        GM_addStyle(modalCSS);
+        $('<div id="ll-modal"><div class="ll-modal-cont">' + modalContent + '</div></div>')
+            .appendTo('body').hide();
+    }
+    
     prepareFeedback();
+    prepareModal();
     waitForUI();
     getFriendList();
 }());
