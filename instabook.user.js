@@ -80,7 +80,8 @@
         $comment.insertAfter($feedbackHolder.find('.UFIList > li:last'));
         // If there are too many comments, delete older ones
         if ($feedbackHolder.find('.UFICommentBody').length > maxComments) {
-            $feedbackHolder.find('.UFIList > li.UFIComment').slice(0, -5).remove();
+            $feedbackHolder.find('.UFIList > li.UFIComment')
+                .slice(0, -1 * maxComments).remove();
         }
     }
     
