@@ -9,7 +9,7 @@ In its current form, the code is written as a Userscript to be run inside the Gr
 So in order to use it
 
 1.  Install the [Greasemonkey Firefox extension](https://addons.mozilla.org/en-US/firefox/addon/greasemonkey/)
-2.  Grab the latest version of the [Likely Likes Userscript](https://github.com/schwarzben/instabook/raw/master/instabook.user.js)
+2.  Grab the latest version of the [Likely Likes Userscript](https://github.com/schwarzben/instabook/raw/master/likely-likes.user.js)
 3.  Greasemonkey should now ask you whether you want to install this script or not (guess what to choose …) so *you’re probably done!*
 
 ## Open wishlist
