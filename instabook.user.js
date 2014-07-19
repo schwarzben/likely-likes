@@ -60,7 +60,8 @@
         // Make someone else say this
         // Friend list: https://www.facebook.com/browse/?type=page_fans&page_id=
         randomFriend = friends[Math.floor(Math.random() * friends.length)];
-        $comment.find('img').attr('src', randomFriend.img);
+        $comment.find('img').attr('src', randomFriend.img)
+            .parent().attr('href', randomFriend.href);
         $comment.find('.UFICommentActorName')
             .text(randomFriend.alt)
             .attr('href', randomFriend.href);
