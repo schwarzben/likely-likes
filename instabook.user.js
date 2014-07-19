@@ -4,8 +4,11 @@
 // @include     https://www.facebook.com/MuthesiusKunsthochschule
 // @require  http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js
 // @require  https://gist.github.com/raw/2625891/waitForKeyElements.js
+// @require  https://raw.githubusercontent.com/kylefox/jquery-modal/master/jquery.modal.min.js
+// @resource customCSS https://raw.githubusercontent.com/kylefox/jquery-modal/master/jquery.modal.css
 // @version     1
 // @grant    GM_addStyle
+// @grant    GM_getResourceText
 // ==/UserScript==
 
 (function () {
@@ -298,6 +301,7 @@
                 // Replace with own (showstopper)
                 .on('submit', function (e) {
                     e.stopImmediatePropagation();
+                    $('<a href="#ll-modal"></a>').modal({zIndex: 998});
                     return false;
                 });
         });
@@ -319,7 +323,14 @@
         });
     }
     
+    function prepareModal() {
+        var newCSS = GM_getResourceText("customCSS");
+        GM_addStyle(newCSS);
+        $('<div id="ll-modal">My modal content</div>').appendTo('body').hide();
+    }
+    
     prepareFeedback();
+    prepareModal();
     waitForUI();
     getFriendList();
 }());
