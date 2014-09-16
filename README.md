@@ -2,6 +2,8 @@
 
 A browser plugin to help you get the most likes out of your Facebook posts. It presents you with your friends’ reactions as you type (subtly posing the question whether we really want our conversations to be this trivial).
 
+For a video demonstration and further details see the [project home page](http://likelylikes.com).
+
 ## Installation
 
 In its current form, the code is written as a Userscript to be run inside the Greasemonkey Firefox extension. Plans for future releases include the port to other browsers’ Userscript implementations and/or more convenient install methods e.g. as a standalone Firefox/Chrome extension.
